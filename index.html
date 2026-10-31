@@ -53,7 +53,7 @@ footer{margin-top:28px;font-size:14px;color:var(--gray)}
 @media (max-width:560px){.row{grid-template-columns:70px 1fr}.pct{grid-column:2;text-align:left}.pct small{display:inline;margin-left:6px}}
 </style></head><body>
 <div class="band"></div>
-<nav class="topnav"><a href="https://www.myaipsychosis.com">← My A.I. Psychosis</a><a class="sub" href="https://www.myaipsychosis.com/subscribe">Subscribe</a></nav>
+<nav class="topnav"><a href="https://myaipsychosis.substack.com" id="backlink">← Back to My A.I. Psychosis</a><a class="sub" href="https://myaipsychosis.substack.com/subscribe">Subscribe</a></nav>
 <div class="wrap">
 <div class="kicker">My A.I. Psychosis · Odds as of Oct. 30, 2026</div>
 <h1>What will you live to see?</h1>
@@ -68,7 +68,7 @@ footer{margin-top:28px;font-size:14px;color:var(--gray)}
  <label class="toggle"><input type="checkbox" id="nodp"> Show the slower timeline, without digital patients</label>
  <div id="list"></div>
  <div class="how"><b>How to read this.</b> Each year is when a breakthrough is likely, better than even odds on timing, provided the science behind it comes through. Whether it comes through is a separate question, so every item shows our honest chance that it does. A 90% item is close to a sure thing; a 30% item may never happen, and its year tells you when to expect it only if it does. "Furthest so far" is the strongest real result to date. Medical breakthroughs assume digital patients (computer copies of people used to test drugs) arrive on our likely schedule, around 2033; tick the box above to see the timeline without them. These are our estimates from public reporting, dated and logged, never promises.</div>
- <footer>Every item links to the story behind it. More every morning at <a href="https://www.myaipsychosis.com">My A.I. Psychosis</a>.</footer>
+ <footer>Every item links to the story behind it. More every morning at <a href="https://myaipsychosis.substack.com">My A.I. Psychosis</a>.</footer>
 </div>
 </div>
 <script>
@@ -94,7 +94,7 @@ function render(){
  let h='';
  for(const k of keys){const t=k==='young'?'Before you turn 20':k==='later'?'Further out':`In your ${k}s`;
   h+=`<div class="decade"><h3>${t}</h3><div class="sub">${groups[k].length} breakthrough${groups[k].length>1?'s':''}</div>`;
-  for(const d of groups[k]){h+=`<div class="row"><div><div class="y">${d.y}</div><div class="a">${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">${esc(d.n)}</div><div class="meta">Furthest so far: ${esc(d.f)} · <a href="https://www.myaipsychosis.com/p/${d.s}" target="_blank" rel="noopener">Read the story →</a></div></div><div class="pct ${cls(d.c)}">${d.c}%<small>chance it works</small></div></div>`}
+  for(const d of groups[k]){h+=`<div class="row"><div><div class="y">${d.y}</div><div class="a">${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">${esc(d.n)}</div><div class="meta">Furthest so far: ${esc(d.f)} · <a href="https://myaipsychosis.substack.com/p/${d.s}" target="_blank" rel="noopener">Read the story →</a></div></div><div class="pct ${cls(d.c)}">${d.c}%<small>chance it works</small></div></div>`}
   h+='</div>'}
  $('list').innerHTML=h||'<p>Nothing in this category yet.</p>';
 }
@@ -124,4 +124,12 @@ $('sharebtn').onclick=async()=>{
  const t=`A treatment that makes several tissues younger is likely by the time I'm ${ageAt(y)}, provided the key breakthroughs come through. Our odds they do: ${f.c}%. What will you live to see? https://future.myaipsychosis.com`;
  try{await navigator.clipboard.writeText(t);$('copied').textContent='Copied.'}catch(e){$('copied').textContent=t}
 };
+
+// Back link: return readers exactly where they were. Substack opens outside nav links in a new tab, so close
+// this tab when it was opened fresh; otherwise step back; otherwise fall back to the page they came from or home.
+(function(){const b=document.getElementById('backlink');if(!b)return;const ours=/myaipsychosis\.(substack\.)?com/.test(document.referrer||'');
+b.addEventListener('click',e=>{e.preventDefault();
+ if(history.length>1&&ours){history.back();return}
+ try{window.close()}catch(_){}
+ setTimeout(()=>{location.href=ours?document.referrer:'https://myaipsychosis.substack.com/'},250)});})();
 </script></body></html>
