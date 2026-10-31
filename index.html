@@ -25,6 +25,7 @@ h1{font-family:Unbounded;font-weight:800;font-size:clamp(34px,7vw,64px);line-hei
 .card .yr{font-family:Unbounded;font-size:40px;color:var(--brick);line-height:1}
 .card .age{font-weight:700;color:var(--teal);margin:6px 0 8px}
 .card .nm{font-weight:700;font-size:18px}
+.odds{font-weight:700;font-size:15px;margin-top:8px}
 .meta{font-size:14px;color:var(--gray);margin-top:6px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 8px}
 .chip{border:2px solid var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;font-size:14px;background:transparent;color:var(--ink);cursor:pointer}
@@ -52,7 +53,7 @@ footer{margin-top:28px;font-size:14px;color:var(--gray)}
 <div class="wrap">
 <div class="kicker">My A.I. Psychosis · Odds as of Oct. 30, 2026</div>
 <h1>What will you live to see?</h1>
-<p class="lede">Enter the year you were born. We'll show the breakthroughs our odds say are likely, and how old you'll be when each one arrives.</p>
+<p class="lede">Enter the year you were born. Here's how the future unfolds as the key breakthroughs come through, and how old you'll be for each step. Beside every one is our honest chance that it happens.</p>
 <div class="form"><label for="by">Birth year</label><input id="by" type="number" inputmode="numeric" min="1920" max="2026" placeholder="1980"><button class="btn" id="go">Show my future</button></div>
 <div class="priv">Your birth year never leaves this page. Nothing is stored or sent anywhere.</div>
 <div id="out">
@@ -62,7 +63,7 @@ footer{margin-top:28px;font-size:14px;color:var(--gray)}
  <div class="chips" id="chips"></div>
  <label class="toggle"><input type="checkbox" id="nodp"> Show the slower timeline, without digital patients</label>
  <div id="list"></div>
- <div class="how"><b>How to read this.</b> "Likely" means our odds that it has happened, counting the chance the science fails, pass 50% by that year. "Possible" means they pass 25%. The percentage beside each one is our honest estimate that it works at all. "Furthest so far" is the strongest real result to date. Medical breakthroughs assume digital patients (computer copies of people used to test drugs) arrive on our likely schedule, around 2033; tick the box above to see the timeline without them. These are our estimates from public reporting, dated and logged, never promises.</div>
+ <div class="how"><b>How to read this.</b> Each year is when a breakthrough is likely, better than even odds on timing, provided the science behind it comes through. Whether it comes through is a separate question, so every item shows our honest chance that it does. A 90% item is close to a sure thing; a 30% item may never happen, and its year tells you when to expect it only if it does. "Furthest so far" is the strongest real result to date. Medical breakthroughs assume digital patients (computer copies of people used to test drugs) arrive on our likely schedule, around 2033; tick the box above to see the timeline without them. These are our estimates from public reporting, dated and logged, never promises.</div>
  <footer>Every item links to the story behind it. More every morning at <a href="https://www.myaipsychosis.com">My A.I. Psychosis</a>.</footer>
 </div>
 </div>
@@ -76,8 +77,7 @@ const $=id=>document.getElementById(id);
 function yrs(d){let p=d.p,l=d.l,n=d.nc;if($('nodp').checked&&d.dp&&d.wo){const s=d.wo-d.l;p+=s;l+=s;n+=s}return [p,l,n]}
 function cdf(y,p,l,n){if(y<=p)return 0.2*Math.max(0,Math.min(1,(y-(p-(l-p)*2/3))/Math.max(.001,(l-p)*2/3)));if(y<=l)return .2+.3*(y-p)/Math.max(.001,l-p);if(y<=n)return .5+.3*(y-l)/Math.max(.001,n-l);return Math.min(1,.8+.2*(y-n)/Math.max(.001,n-l))}
 function whenChance(d,target){const [p,l,n]=yrs(d);const c=d.c/100;if(c<target)return null;for(let y=NOW;y<=2120;y++){if(c*cdf(y,p,l,n)>=target)return y}return null}
-function yearOf(d){const L=whenChance(d,.5);return L!==null?L:whenChance(d,.25)}
-function isLikely(d){return whenChance(d,.5)!==null}
+function yearOf(d){return yrs(d)[1]}
 function ageAt(y){return y-birth}
 function ageTxt(y){const a=ageAt(y);if(a<=0)return "before you're born";if(a>100)return "in "+y;return "when you're "+a}
 function cls(c){return c>=70?'hi':(c>=40?'mid':'lo')}
@@ -90,20 +90,20 @@ function render(){
  let h='';
  for(const k of keys){const t=k==='young'?'Before you turn 20':k==='later'?'Further out':`In your ${k}s`;
   h+=`<div class="decade"><h3>${t}</h3><div class="sub">${groups[k].length} breakthrough${groups[k].length>1?'s':''}</div>`;
-  for(const d of groups[k]){h+=`<div class="row"><div><div class="y">${d.y}</div><div class="a">${isLikely(d)?'likely':'possible'} · ${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">${esc(d.n)}</div><div class="meta">Furthest so far: ${esc(d.f)} · <a href="https://www.myaipsychosis.com/p/${d.s}" target="_blank" rel="noopener">Read the story →</a></div></div><div class="pct ${cls(d.c)}">${d.c}%<small>can it work?</small></div></div>`}
+  for(const d of groups[k]){h+=`<div class="row"><div><div class="y">${d.y}</div><div class="a">${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">${esc(d.n)}</div><div class="meta">Furthest so far: ${esc(d.f)} · <a href="https://www.myaipsychosis.com/p/${d.s}" target="_blank" rel="noopener">Read the story →</a></div></div><div class="pct ${cls(d.c)}">${d.c}%<small>chance it works</small></div></div>`}
   h+='</div>'}
  $('list').innerHTML=h||'<p>Nothing in this category yet.</p>';
 }
 function heroCards(){
  const pick=HEROES.map(n=>DATA.find(d=>d.n===n)).filter(Boolean);
- $('big3').innerHTML=pick.map(d=>{const y=yearOf(d);const pos=whenChance(d,.25);return `<div class="card"><div class="yr">${y}</div><div class="age">${isLikely(d)?'Likely':'Possible'} ${ageTxt(y)}</div>${(isLikely(d)&&pos&&pos<y)?`<div class="meta" style="margin:-4px 0 8px">Possible as early as ${pos}, ${ageTxt(pos)}</div>`:''}<div class="nm">${esc(d.n)}</div><div class="meta">${d.c}% that it works · furthest so far: ${esc(d.f)}</div></div>`}).join('');
+ $('big3').innerHTML=pick.map(d=>{const y=yearOf(d);return `<div class="card"><div class="yr">${y}</div><div class="age">Likely ${ageTxt(y)}</div><div class="nm">${esc(d.n)}</div><div class="odds ${cls(d.c)}">${d.c}% chance it works</div><div class="meta">Furthest so far: ${esc(d.f)}</div></div>`}).join('');
 }
 function headline(){
- const f=DATA.find(d=>d.n===HEROES[0]);const L=whenChance(f,.5),P=whenChance(f,.25);
- const all=DATA.map(d=>({...d,y:yearOf(d)})).filter(d=>d.y!==null&&d.y>=NOW&&d.y<=L&&isLikely(d));
- const al=ageAt(L),ap=ageAt(P);
- $('headline').textContent=al<=100?`By the time you're ${al}, a treatment that reverses aging is likely. It's possible by ${ap}.`:`A treatment that reverses aging is likely by ${L}, and possible by ${P}.`;
- $('headsub').textContent=`And ${all.length-1} more breakthroughs on our board are likely before then. You're about ${NOW-birth} now. Here's the future you're likely to see, and how old you'll be for each piece of it.`;
+ const f=DATA.find(d=>d.n===HEROES[0]);const L=yearOf(f);
+ const all=DATA.filter(d=>d!==f&&yearOf(d)>=NOW&&yearOf(d)<=L);
+ const al=ageAt(L);
+ $('headline').textContent=al<=100?`A treatment that reverses aging is likely by ${L}, when you're ${al}, provided the key breakthroughs come through.`:`A treatment that reverses aging is likely by ${L}, provided the key breakthroughs come through.`;
+ $('headsub').textContent=`Our odds they do: ${f.c}%. On the same terms, ${all.length} other breakthroughs on our board would likely arrive before then, including ${all.filter(d=>d.c>=70).length} we rate 70% or better. You're about ${NOW-birth} now. Here's that future, step by step, with the odds beside each one.`;
 }
 function go(){
  const v=parseInt($('by').value,10);
@@ -116,8 +116,8 @@ $('nodp').onchange=()=>{if(birth){headline();heroCards();render()}};
 $('chips').innerHTML=CATS.map(c=>`<button class="chip${c==='All'?' on':''}" data-c="${c}">${c}</button>`).join('');
 $('chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;cur=b.dataset.c;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b));render()};
 $('sharebtn').onclick=async()=>{
- const f=DATA.find(d=>d.n===HEROES[1]);const y=yearOf(f);const word=isLikely(f)?'likely':'possible';
- const t=`By the time I'm ${ageAt(y)}, our odds say a treatment that makes several tissues younger is ${word}. What will you live to see? https://www.myaipsychosis.com`;
+ const f=DATA.find(d=>d.n===HEROES[1]);const y=yearOf(f);
+ const t=`A treatment that makes several tissues younger is likely by the time I'm ${ageAt(y)}, provided the key breakthroughs come through. Our odds they do: ${f.c}%. What will you live to see? https://future.myaipsychosis.com`;
  try{await navigator.clipboard.writeText(t);$('copied').textContent='Copied.'}catch(e){$('copied').textContent=t}
 };
 </script></body></html>
