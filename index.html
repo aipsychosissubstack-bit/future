@@ -133,7 +133,7 @@ function go(){
  $('out').scrollIntoView({behavior:'smooth',block:'start'});
 }
 (async function(){let k=null;try{const u=new URL(location.href);k=u.searchParams.get('unlock');if(k){localStorage.setItem('mapk',k);u.searchParams.delete('unlock');history.replaceState(null,'',u.pathname+u.search+u.hash)}else k=localStorage.getItem('mapk')}catch(e){}
- if(!k)return;try{const r=await fetch(UNLOCK_API+'?k='+encodeURIComponent(k));if(!r.ok){if(r.status===403){try{localStorage.removeItem('mapk')}catch(e){}}return}const full=await r.json();const byId=Object.fromEntries(full.map(d=>[d.id,d]));DATA=DATA.map(d=>d.locked&&byId[d.id]?byId[d.id]:d);unlocked=true;if(birth){headline();heroCards();render()}}catch(e){}})();
+ if(!k)return;try{const r=await fetch(UNLOCK_API+'?k='+encodeURIComponent(k));if(!r.ok){if(r.status===403){try{localStorage.removeItem('mapk')}catch(e){}}return}const full=await r.json();const byId=Object.fromEntries(full.map(d=>[d.id,d]));DATA=DATA.map(d=>d.locked&&byId[d.id]?byId[d.id]:d);unlocked=true;const sb=document.querySelector('.topnav .sub');if(sb)sb.remove();if(birth){headline();heroCards();render()}}catch(e){}})();
 $('go').onclick=go;$('by').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
 $('nodp').onchange=()=>{if(birth){headline();heroCards();render()}};
 $('chips').innerHTML=CATS.map(c=>`<button class="chip${c==='All'?' on':''}" data-c="${c}">${c}</button>`).join('');
