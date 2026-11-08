@@ -60,7 +60,7 @@ footer{margin-top:28px;font-size:14px;color:var(--gray)}
 @media (max-width:560px){.row{grid-template-columns:1fr;gap:6px}.row>div:first-child{display:flex;gap:10px;align-items:baseline}.row .y{font-size:24px}.row .a{margin-top:0}.pct{grid-column:1;text-align:left}.pct small{display:inline;margin-left:6px}.card .yr{font-size:34px}}
 </style></head><body>
 <div class="band"></div>
-<nav class="topnav"><a href="https://myaipsychosis.substack.com" id="backlink">← Back to My A.I. Psychosis</a><a class="sub" href="https://myaipsychosis.substack.com/subscribe">Subscribe</a></nav>
+<nav class="topnav"><a href="https://www.myaipsychosis.com/" id="backlink">MyAIPsychosis.com</a><a class="sub" href="https://myaipsychosis.substack.com/subscribe">Subscribe</a></nav>
 <div class="wrap">
 <div class="kicker">My A.I. Psychosis · Odds as of Nov. 2, 2026</div>
 <h1>What will you live to see?</h1>
@@ -144,11 +144,4 @@ $('sharebtn').onclick=async()=>{
  try{await navigator.clipboard.writeText(t);$('copied').textContent='Copied.'}catch(e){$('copied').textContent=t}
 };
 
-// Back link: return readers exactly where they were. Substack opens outside nav links in a new tab, so close
-// this tab when it was opened fresh; otherwise step back; otherwise fall back to the page they came from or home.
-(function(){const b=document.getElementById('backlink');if(!b)return;const ours=/myaipsychosis\.(substack\.)?com/.test(document.referrer||'');
-b.addEventListener('click',e=>{e.preventDefault();
- if(history.length>1&&ours){history.back();return}
- try{window.close()}catch(_){}
- setTimeout(()=>{location.href=ours?document.referrer:'https://myaipsychosis.substack.com/'},250)});})();
 </script></body></html>
