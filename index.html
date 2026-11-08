@@ -58,9 +58,11 @@ h1{font-family:Unbounded;font-weight:800;font-size:clamp(34px,7vw,64px);line-hei
 .how b{color:var(--ink)}
 footer{margin-top:28px;font-size:14px;color:var(--gray)}
 @media (max-width:560px){.row{grid-template-columns:1fr;gap:6px}.row>div:first-child{display:flex;gap:10px;align-items:baseline}.row .y{font-size:24px}.row .a{margin-top:0}.pct{grid-column:1;text-align:left}.pct small{display:inline;margin-left:6px}.card .yr{font-size:34px}}
-</style></head><body>
+</style><!-- Meta pixel (same pixel as the Substack, 2026-11-08): counts calculator visits from ads so signups that start here are attributed. -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1123653377322943');fbq('track','PageView');</script>
+</head><body>
 <div class="band"></div>
-<nav class="topnav"><a href="https://www.myaipsychosis.com/" id="backlink">MyAIPsychosis.com</a><a class="sub" href="https://myaipsychosis.substack.com/subscribe">Subscribe</a></nav>
+<nav class="topnav"><a href="https://www.myaipsychosis.com/" id="backlink">MyAIPsychosis.com</a><a class="sub" href="https://www.myaipsychosis.com/subscribe">Subscribe</a></nav>
 <div class="wrap">
 <div class="kicker">My A.I. Psychosis · Odds as of Nov. 2, 2026</div>
 <h1>What will you live to see?</h1>
@@ -75,7 +77,7 @@ footer{margin-top:28px;font-size:14px;color:var(--gray)}
  <label class="toggle"><input type="checkbox" id="nodp"> Show the slower timeline, without digital patients</label>
  <div id="list"></div>
  <div class="how"><b>How to read this.</b> Each year is when a breakthrough is likely, better than even odds on timing, provided the science behind it comes through. Whether it comes through is a separate question, so every item shows our honest chance that it does. A 90% item is close to a sure thing; a 30% item is a long shot worth watching, and its year is when to expect it once the science comes through. "Furthest so far" is the strongest real result to date. Medical breakthroughs assume digital patients (computer copies of people used to test drugs) arrive on our likely schedule, around 2033; tick the box above to see the timeline without them. These are our estimates from public reporting, dated and logged, never promises.</div>
- <footer>Every item links to the story behind it. More every morning at <a href="https://myaipsychosis.substack.com">My A.I. Psychosis</a>.</footer>
+ <footer>Every item links to the story behind it. More every morning at <a href="https://www.myaipsychosis.com/">My A.I. Psychosis</a>.</footer>
 </div>
 </div>
 <script>
@@ -111,7 +113,7 @@ function render(){
  let h='';
  for(const k of keys){const t=k==='young'?'Before you turn 20':k==='later'?'Further out':`In your ${k}s`;
   h+=`<div class="decade"><h3>${t}</h3><div class="sub">${groups[k].length} breakthrough${groups[k].length>1?'s':''}</div>`;
-  for(const d of groups[k]){if(d.locked){if(!barDone){h+=BAR;barDone=true}h+=`<div class="row locked"><div><div class="y">${d.y}</div><div class="a">${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">Subscribers see this breakthrough</div><div class="meta">&#128274; Locked</div></div><div class="pct">?<small>chance it works</small></div></div>`;continue}h+=`<div class="row"><div><div class="y">${d.y}</div><div class="a">${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">${esc(d.n)}</div><div class="meta">Furthest so far: ${esc(d.f)}${liveSrc(d)?` · <a href="https://myaipsychosis.substack.com/p/${liveSrc(d)}" target="_blank" rel="noopener">Read the story →</a>`:""}</div></div><div class="pct ${cls(d.c)}">${d.c}%<small>chance it works</small></div></div>`}
+  for(const d of groups[k]){if(d.locked){if(!barDone){h+=BAR;barDone=true}h+=`<div class="row locked"><div><div class="y">${d.y}</div><div class="a">${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">Subscribers see this breakthrough</div><div class="meta">&#128274; Locked</div></div><div class="pct">?<small>chance it works</small></div></div>`;continue}h+=`<div class="row"><div><div class="y">${d.y}</div><div class="a">${ageTxt(d.y).replace("when you're ","age ")}</div></div><div><div class="cat">${esc(d.cat)}</div><div class="n">${esc(d.n)}</div><div class="meta">Furthest so far: ${esc(d.f)}${liveSrc(d)?` · <a href="https://www.myaipsychosis.com/p/${liveSrc(d)}" target="_blank" rel="noopener">Read the story →</a>`:""}</div></div><div class="pct ${cls(d.c)}">${d.c}%<small>chance it works</small></div></div>`}
   h+='</div>'}
  $('list').innerHTML=h||'<p>Nothing in this category yet.</p>';
 }
@@ -144,4 +146,6 @@ $('sharebtn').onclick=async()=>{
  try{await navigator.clipboard.writeText(t);$('copied').textContent='Copied.'}catch(e){$('copied').textContent=t}
 };
 
+// Carry ad tags (utm_*) through to the Subscribe link so Substack credits the signup to its source.
+(function(){const q=new URLSearchParams(location.search),k=[...q.keys()].filter(x=>x.startsWith('utm_'));if(!k.length)return;const s=document.querySelector('a.sub');if(!s)return;const u=new URL(s.href);k.forEach(x=>u.searchParams.set(x,q.get(x)));s.href=u.toString();})();
 </script></body></html>
